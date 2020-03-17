@@ -385,7 +385,7 @@ class TCPRelayHandler(object):
             self.destroy()
 
     def _create_remote_socket(self, ip, port):
-	logging.info("ip: "+str(ip)+",port: "+str(port))
+    logging.info("ip: "+str(ip)+",port: "+str(port))
         addrs = socket.getaddrinfo(ip, port, 0, socket.SOCK_STREAM,
                                    socket.SOL_TCP)
         if len(addrs) == 0:
@@ -563,13 +563,14 @@ class TCPRelayHandler(object):
         self._update_activity(len(data))
         if not is_local:
 
-            logging.info("================Data Send Open===============")
+            # logging.info("================Data Send Open===============")
             #logging.info("Before data decrypt: "+repr(data))
 
             data = self._encryptor.decrypt(data)
 
-            logging.warn("\033[91mAfter data decrypt:  "+repr(data)+"\033[0m")
-            logging.info("================Data Send Close===============")
+            # ip, port = self._local_sock.getpeername()
+            # logging.warn("\033[91mAfter decrypt: "+"\nip: "+str(ip)+"\nport: "+str(port)+"\ndata: "+repr(data)+"\033[0m")
+            # logging.info("================Data Send Close===============")
 
 
 
@@ -605,7 +606,9 @@ class TCPRelayHandler(object):
             data = self._encryptor.decrypt(data)
         else:
             logging.info("================Data Received Open===============")
-            logging.warn("\033[94mBefore data encrypt: "+repr(data)+"\033[0m")
+            ip, port = self._remote_sock.getpeername()
+            logging.warn("\033[94mBefore encrypt: "+"\nip: "+str(ip)+"\nport: "+str(port)+"\ndata: "+repr(data)+"\033[0m")
+            
             data = self._encryptor.encrypt(data)
 
             #logging.info("After data encrypt:  "+repr(data))
@@ -626,6 +629,12 @@ class TCPRelayHandler(object):
         if self._data_to_write_to_local:
             data = b''.join(self._data_to_write_to_local)
             self._data_to_write_to_local = []
+
+            logging.info("================Data Received Open===============")
+            ip, port = self._local_sock.getpeername()
+            logging.warn("\033[94mLocal Write: "+"\nip: "+str(ip)+"\nport: "+str(port)+"\ndata: "+repr(data)+"\033[0m")
+            logging.info("================Data Received Close===============")
+
             self._write_to_sock(data, self._local_sock)
         else:
             self._update_stream(STREAM_DOWN, WAIT_STATUS_READING)
@@ -636,6 +645,16 @@ class TCPRelayHandler(object):
         if self._data_to_write_to_remote:
             data = b''.join(self._data_to_write_to_remote)
             self._data_to_write_to_remote = []
+
+            
+            logging.info("================Data Send Open===============")
+
+
+            ip, port = self._remote_sock.getpeername()
+            logging.warn("\033[91mRemote Write: "+"\nip: "+str(ip)+"\nport: "+str(port)+"\ndata: "+repr(data)+"\033[0m")
+            logging.info("================Data Send Close===============")
+
+
             self._write_to_sock(data, self._remote_sock)
         else:
             self._update_stream(STREAM_UP, WAIT_STATUS_READING)
