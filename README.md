@@ -7,12 +7,15 @@
 
 ###Server Side
 ```$ git clone https://github.com/dinhbaouit/mzshadows.git```
+#####
 ```$ cd mzshadows```
+#####
 Default run
 ```$ ./run.sh```
+#####
 Custum run
 ```$ python sockserver -p [port] -k [password] -m [encrypt algorithm]```
 
 ## Demo
 
- ![Tux, the Linux mascot](/assets/images/demo.png)
+ ![images](/assets/images/demo.png)
