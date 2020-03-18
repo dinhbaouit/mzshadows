@@ -1,4 +1,10 @@
 # MZShadows - Monitor socket traffic 
+## Introduction
+A Socks5 proxy with encryption to bypass internal firewall
+
+## Operation
+ ![images](/assets/images/op.png)
+
 ## Set Up
 
 ### Client Side:
