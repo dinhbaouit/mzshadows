@@ -26,3 +26,6 @@ Custum run
 ## Demo
 
  ![images](/assets/images/demo.png)
+
+## Author
+dinhbaouit aka 0xd0ff9 (https://twitter.com/Jok3rDb)
